@@ -1,0 +1,26 @@
+
+.dialogTitle {
+    background-color: hsla(211, 100%, 84%, 0.58);
+    width: 30vw;
+}
+
+.dialogTitle h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.dialogContent {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.dialogContent * {
+    margin: 10px 0;
+}
+
+.dialogAction {
+    background-color: hsla(210, 100%, 89%, 0.58);
+}
+

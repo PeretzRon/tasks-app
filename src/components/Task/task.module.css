@@ -1,0 +1,29 @@
+
+.root {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 30vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    background-color: #d1dbf6;
+}
+
+.root:hover {
+    background-color: #bbc9ee;
+}
+
+.root * {
+    margin: 0 10px;
+}
+
+.doneTask {
+    text-decoration: line-through;
+    animation: strike 0.5s linear;
+}
+
+@keyframes strike {
+    from { text-decoration-color: transparent; }
+    to { text-decoration-color: black; }
+}

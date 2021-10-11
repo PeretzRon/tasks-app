@@ -1,0 +1,29 @@
+.Auth {
+    padding: 40px 0;
+}
+
+.paper {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    margin: 10px 0 !important
+}
+
+.avatarLogo {
+    margin: 10px;
+    background-color: #3b5998
+}
+
+.form {
+    width: 100%;
+    margin-top: 2px;
+}
+
+.submit {
+    margin: 10px 0 !important
+}
+

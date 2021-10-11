@@ -1,0 +1,36 @@
+.main {
+
+}
+
+.searchbar {
+    margin: 5px;
+}
+
+.filterButtons {
+    margin: 10px;
+}
+
+.tasksList {
+    display: flex;
+    justify-content: center;
+}
+
+.addIcon {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    font-size: 5rem;
+    transition: transform 0.2s ease-in;
+}
+
+.addIcon:hover {
+    transform: scale(1.2);
+}
+
+.loading {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
