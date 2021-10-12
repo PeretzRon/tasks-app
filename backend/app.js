@@ -5,6 +5,7 @@ const tasksRouter = require('./routes/tasks');
 const usersRouter = require('./routes/users');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
 const app = express();
 app.use(bodyParser.urlencoded({

@@ -50,7 +50,7 @@ router.post('/authUser', async (req, res) => {
 });
 
 router.get('/test', (req, res) => {
-    const token = jwt.sign({_id: "sd"}, '1231', {expiresIn: '250s'});
+    const token = jwt.sign({_id: "sd"}, process.env.JWT_SECURITY_KEY, {expiresIn: '250s'});
     console.log(token);
     const options = {
         httpOnly: true,

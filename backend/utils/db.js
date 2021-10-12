@@ -1,5 +1,4 @@
 const mongodb = require('mongodb');
-const {mongoDbUrl} = require("./mongoSettings");
 
 const MongoClient = mongodb.MongoClient;
 
@@ -10,7 +9,7 @@ const initDb = callback => {
         console.log('Database is already initialized!');
         return callback(null, _db);
     }
-    MongoClient.connect(mongoDbUrl)
+    MongoClient.connect(process.env.MONGO_URL)
         .then(client => {
             _db = client;
             callback(null, _db);
