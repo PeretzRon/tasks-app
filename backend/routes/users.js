@@ -49,16 +49,4 @@ router.post('/authUser', async (req, res) => {
     }
 });
 
-router.get('/test', (req, res) => {
-    const token = jwt.sign({_id: "sd"}, process.env.JWT_SECURITY_KEY, {expiresIn: '250s'});
-    console.log(token);
-    const options = {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 10, // 10 min
-        domain: 'http://localhost:3000'
-    };
-    res.cookie('token', token, options);
-    res.status(200).end();
-});
-
 module.exports = router;

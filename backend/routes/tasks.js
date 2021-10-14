@@ -57,7 +57,7 @@ router.post('/addNewTask', verifyToken, async (req, res) => {
     if (result?.modifiedCount > 0) {
         res.status(201).json({_id: id});
     } else {
-        res.status(500).send('error');
+        res.status(500).json({error: 'error to add new task'});
     }
 });
 

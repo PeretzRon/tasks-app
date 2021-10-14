@@ -6,7 +6,7 @@ import classes from './tasks.module.css';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AddTaskDialog from "../../components/AddTaskDialog/addTaskDialog";
 import {addTask, deleteTask, getTasks, updateTask} from "../../api/tasksApi";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, Grid} from "@mui/material";
 import {useHistory} from "react-router-dom";
 
 
@@ -129,7 +129,12 @@ const Tasks = () => {
                 filterAreaAction={onFilterAreaAction}/>
         </div>
         <div className={classes.tasksList}>
-            {tasksToRender}
+            <Grid container spacing={2}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center">
+                {tasksToRender}
+            </Grid>
         </div>
         <div className={classes.addIcon}>
             <AddCircleIcon onClick={openDialogAction} style={{fontSize: '4rem', color: "#1976D2"}}/>
@@ -139,11 +144,11 @@ const Tasks = () => {
                                         onClose={onCloseAction}/>}
     </div>);
 
-    const aaa = tasksState.loading ? loadingTasks : tasksSection;
+    const page = tasksState.loading ? loadingTasks : tasksSection;
 
     return (
         <div className={classes.main}>
-            {aaa}
+            {page}
         </div>
     );
 };

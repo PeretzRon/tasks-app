@@ -27,14 +27,19 @@ const Auth = props => {
     } = useForm();
     const [isSignUp, setIsSignUp] = useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
         window.scrollTo({top: 0});
     }, []);
 
+    const sleep = () =>  new Promise(resolve => setTimeout(resolve, 3000));
+
 
     const onSubmitHandler = async (data) => {
+        setLoading(true);
+        await sleep();
         if (isSignUp) {
             const response = await createUser(data);
             console.log(response.status);
@@ -47,6 +52,7 @@ const Auth = props => {
                 history.push("/tasks");
             }
         }
+        setLoading(false);
     };
 
     const isSignUpToggle = () => {
@@ -67,7 +73,7 @@ const Auth = props => {
         </Alert>
     </Snackbar>;
 
-    let spinner = props.loading ? <div className={classes.form}><LinearProgress/></div> : null;
+    let spinner = loading ? <div className={classes.form}><LinearProgress/></div> : null;
     let authPage = null;
     if (isSignUp) {
         authPage = <Container component="main" maxWidth="xs">
@@ -80,7 +86,7 @@ const Auth = props => {
                     Sign up
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit(onSubmitHandler)}>
-                      <Grid container spacing={2}>
+                    <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"

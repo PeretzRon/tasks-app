@@ -21,10 +21,16 @@ const encrypt = (data) => {
  * @return {string} the decrypted data
  */
 const decrypt = (encryptedData) => {
-    const myKey = crypto.createDecipheriv(algorithm, process.env.CRYPTO_AES_PRIVATE_KEY, ivHex);
-    let decryptData = myKey.update(encryptedData, 'hex', 'utf8');
-    decryptData += myKey.final('utf8');
-    return decryptData;
+    try {
+        const myKey = crypto.createDecipheriv(algorithm, process.env.CRYPTO_AES_PRIVATE_KEY, ivHex);
+        let decryptData = myKey.update(encryptedData, 'hex', 'utf8');
+        decryptData += myKey.final('utf8');
+        return decryptData;
+    } catch (error) {
+        console.log(error);
+        return '';
+    }
+
 };
 
 module.exports = {
