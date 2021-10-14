@@ -1,8 +1,5 @@
 .Auth {
     padding: 40px 0;
-}
-
-.paper {
     margin-top: 8px;
     display: flex;
     flex-direction: column;
@@ -23,7 +20,15 @@
     margin-top: 2px;
 }
 
+.loadingSpinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+}
+
 .submit {
-    margin: 10px 0 !important
+    margin: 10px 0 !important;
 }
 
