@@ -9,15 +9,17 @@ const Register = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
     const [loading, setLoading] = useState(false);
 
-    const onSubmitForm = async (data) => {
+    const onSubmitForm = async (userInput) => {
         setLoading(true);
-        const response = await (await api.createUser(data)).json();
-        if (response.status === 201) {
-            toastNotify(response.msg, {type: 'success'});
-        } else {
-            toastNotify(response.error, {type: 'error'});
-        }
+        const response = await api.createUser(userInput);
+        const data = await response.json();
         setLoading(false);
+        if (response.status === 201) {
+            toastNotify(data.msg, {type: 'success'});
+            onChangedLoginRegisterPage();
+        } else {
+            toastNotify(data.error, {type: 'error'});
+        }
     };
 
     return (

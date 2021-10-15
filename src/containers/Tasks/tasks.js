@@ -8,6 +8,7 @@ import AddTaskDialog from "../../components/AddTaskDialog/addTaskDialog";
 import {addTask, deleteTask, getTasks, updateTask} from "../../api/tasksApi";
 import {CircularProgress, Grid} from "@mui/material";
 import {useHistory} from "react-router-dom";
+import {sleep, toastNotify} from "../../Utils/commonMethods";
 
 
 const Tasks = () => {
@@ -22,16 +23,15 @@ const Tasks = () => {
             try {
                 const response = await getTasks();
                 if (response.status === 200) {
-                    setTimeout(async () => {
-                        const retrievedTasks = await response.json();
-                        setTasksState({loading: false, tasks: retrievedTasks});
-                    }, 1000);
+                    await sleep(700);
+                    const retrievedTasks = await response.json();
+                    setTasksState({loading: false, tasks: retrievedTasks});
                 } else {
+                    toastNotify("Token expire, please log in", {type: 'error'});
                     history.push('/');
                 }
             } catch (error) {
                 setTasksState({...tasksState, loading: false});
-
             }
         };
 
@@ -70,8 +70,9 @@ const Tasks = () => {
             tasksState.tasks[indexToUpdate] = {...tasksState.tasks[indexToUpdate]};
             setTasksState({...tasksState});
         } else if (response.status === 400 || response.status === 401) {
-            // TODO: show message
+            toastNotify("Token expire, please log in", {type: 'error'});
             history.push('/');
+
         } else {
             console.error('failed to update');
         }

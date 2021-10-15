@@ -3,51 +3,44 @@ const db = require("../utils/db");
 const {encrypt, decrypt} = require('../utils/cryptoAES');
 const router = express.Router();
 const createToken = require('../utils/createToken');
+const {getEncryptedData} = require("../utils/md5");
 
 router.post('/createUser', async (req, res) => {
-    const details = req.body;
-    const {email, ...otherDetails} = details;
+    const {email, password, ...userDetails} = req.body;
+    const uuid = getEncryptedData(`${email}-${password}`);
+    console.log(uuid);
     let result = await db.getDb()
         .db()
         .collection('tasks')
-        .find({_id: email}).count();
+        .find({uuid: uuid}).count();
     if (result > 0) return res.status(400).json({error: 'User already exist'});
 
     // Add new user to DB
-    otherDetails.password = encrypt(otherDetails.password);
+    // otherDetails.password = encrypt(otherDetails.password);
     result = await db.getDb()
         .db()
         .collection('tasks')
-        .insertOne({_id: email, ...otherDetails});
+        .insertOne({uuid: uuid, ...userDetails, email: email, tasks: {}});
     if (result) {
         res.status(201).json({msg: 'User create successfully'});
     } else {
         res.status(500).json({error: 'Failed to create user'});
     }
-
 });
 
 router.post('/authUser', async (req, res) => {
-    const {email} = req.body;
+    const {email, password} = req.body;
+    const uuid = getEncryptedData(`${email}-${password}`);
     let result = await db.getDb()
         .db()
         .collection('tasks')
-        .find({_id: email}).toArray();
+        .find({uuid: uuid}).toArray();
 
-    if (result.length === 0) return;
-    const {firstName, lastName, _id, password} = result[0]
-    let isUserApproved = false;
-    if (_id === email) {
-        isUserApproved = decrypt(password) === req.body.password;
-    }
-    if (isUserApproved) {
-        createToken(email, res);
-        res.status(200)
-            .json({msg: `Hello, ${firstName} ${lastName}`});
-    } else {
-        res.status(401)
-            .json({error: 'Wrong User/Password'});
-    }
+    if (result.length === 0) return res.status(400).json({error: 'Wrong User/Password'});
+    createToken(uuid, res);
+    const {firstName, lastName} = result[0];
+    res.status(200)
+        .json({msg: `Hello, ${firstName} ${lastName}`});
 });
 
 module.exports = router;

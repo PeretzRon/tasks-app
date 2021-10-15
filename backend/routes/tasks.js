@@ -9,7 +9,7 @@ router.get('/getTasks', verifyToken, async (req, res, next) => {
     const results = await db.getDb()
         .db()
         .collection('tasks')
-        .find({_id: req.user._id})
+        .find({uuid: req.user.uuid})
         .project({_id: 0, tasks: 1})
         .toArray();
     const listTasks = [];
@@ -26,7 +26,7 @@ router.put('/updateTask', verifyToken, async (req, res) => {
     const result = await db.getDb()
         .db()
         .collection('tasks')
-        .updateOne({_id: req.user._id}, {$set: {[`tasks.${_id}`]: task}});
+        .updateOne({uuid: req.user.uuid}, {$set: {[`tasks.${_id}`]: task}});
     if (result?.modifiedCount > 0) {
         res.status(204).send('');
     } else {
@@ -39,7 +39,7 @@ router.delete('/deleteTask', verifyToken, async (req, res) => {
     const result = await db.getDb()
         .db()
         .collection('tasks')
-        .updateOne({_id: req.user._id}, {$unset: {[`tasks.${taskID}`]: ""}});
+        .updateOne({uuid: req.user.uuid}, {$unset: {[`tasks.${taskID}`]: ""}});
     if (result?.modifiedCount) {
         res.status(204).end();
     } else {
@@ -53,7 +53,7 @@ router.post('/addNewTask', verifyToken, async (req, res) => {
     const result = await db.getDb()
         .db()
         .collection('tasks')
-        .updateOne({_id: req.user._id}, {$set: {[`tasks.${id}`]: task}});
+        .updateOne({uuid: req.user.uuid}, {$set: {[`tasks.${id}`]: task}});
     if (result?.modifiedCount > 0) {
         res.status(201).json({_id: id});
     } else {
