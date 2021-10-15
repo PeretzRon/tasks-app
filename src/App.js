@@ -5,8 +5,11 @@ import classes from './App.module.css';
 import {Route, Switch} from 'react-router-dom';
 import Auth from "./containers/Auth/Auth";
 import {StyledEngineProvider} from "@mui/material";
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+    console.log("App")
     return (
         <StyledEngineProvider injectFirst>
             <div className={classes.App}>
@@ -16,6 +19,9 @@ function App() {
                     <Route path={'/'} component={Auth}/>
                 </Switch>
             </div>
+            <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false}
+                            closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover
+            />
         </StyledEngineProvider>
 
     );

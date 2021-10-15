@@ -6,7 +6,6 @@ import Login from "./Login/Login";
 import Register from "./Register/Register";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-
 const Auth = props => {
 
     const {
@@ -47,7 +46,6 @@ const Auth = props => {
                 {isLoginPage ? 'Sign in' : 'Sign up'}
             </Typography>
             {isLoginPage ? loginPage : registerPage}
-
         </div>
     );
 };

@@ -3,6 +3,7 @@ import {CircularProgress, Container, CssBaseline, Grid, Link, TextField} from "@
 import classes from "../Auth.module.css";
 import Button from "@mui/material/Button";
 import * as api from "../../../api/tasksApi";
+import {toastNotify} from "../../../Utils/commonMethods";
 
 const Register = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
@@ -10,10 +11,11 @@ const Register = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
     const onSubmitForm = async (data) => {
         setLoading(true);
-        const response = await api.createUser(data);
-        console.log(response.status);
-        if (response.status === 400) {
-            // add alert
+        const response = await (await api.createUser(data)).json();
+        if (response.status === 201) {
+            toastNotify(response.msg, {type: 'success'});
+        } else {
+            toastNotify(response.error, {type: 'error'});
         }
         setLoading(false);
     };

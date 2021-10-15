@@ -27,7 +27,7 @@ const decrypt = (encryptedData) => {
         decryptData += myKey.final('utf8');
         return decryptData;
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         return '';
     }
 

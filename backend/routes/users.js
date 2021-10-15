@@ -2,8 +2,7 @@ const express = require('express');
 const db = require("../utils/db");
 const {encrypt, decrypt} = require('../utils/cryptoAES');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-
+const createToken = require('../utils/createToken');
 
 router.post('/createUser', async (req, res) => {
     const details = req.body;
@@ -12,7 +11,7 @@ router.post('/createUser', async (req, res) => {
         .db()
         .collection('tasks')
         .find({_id: email}).count();
-    if (result > 0) return res.status(400).send('User Exist');
+    if (result > 0) return res.status(400).json({error: 'User already exist'});
 
     // Add new user to DB
     otherDetails.password = encrypt(otherDetails.password);
@@ -20,32 +19,34 @@ router.post('/createUser', async (req, res) => {
         .db()
         .collection('tasks')
         .insertOne({_id: email, ...otherDetails});
-    console.log(result);
-    if (result)
-        res.status(201).send(''); // TODO: change
+    if (result) {
+        res.status(201).json({msg: 'User create successfully'});
+    } else {
+        res.status(500).json({error: 'Failed to create user'});
+    }
+
 });
 
 router.post('/authUser', async (req, res) => {
-    const {email, password} = req.body;
+    const {email} = req.body;
     let result = await db.getDb()
         .db()
         .collection('tasks')
         .find({_id: email}).toArray();
 
+    if (result.length === 0) return;
+    const {firstName, lastName, _id, password} = result[0]
     let isUserApproved = false;
-    if (result.length > 0 && result[0]._id === email) {
-        isUserApproved = decrypt(result[0].password) === password;
+    if (_id === email) {
+        isUserApproved = decrypt(password) === req.body.password;
     }
     if (isUserApproved) {
-        const token = jwt.sign({_id: email}, '1231', {expiresIn: '6h'});
-        const options = {
-            httpOnly: false,
-            secure: false,
-            maxAge: 1000 * 60 * 240 // 6 h
-        };
-        res.cookie('token', token, options).end();
+        createToken(email, res);
+        res.status(200)
+            .json({msg: `Hello, ${firstName} ${lastName}`});
     } else {
-        res.status(4001).json({error: 'Access Denied'});
+        res.status(401)
+            .json({error: 'Wrong User/Password'});
     }
 });
 

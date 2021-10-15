@@ -4,7 +4,7 @@ import classes from "../Auth.module.css";
 import Button from "@mui/material/Button";
 import {useHistory} from "react-router-dom";
 import * as api from "../../../api/tasksApi";
-import {sleep} from "../../../Utils/commonMethods";
+import {sleep, toastNotify} from "../../../Utils/commonMethods";
 
 const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
@@ -13,14 +13,16 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
     const onSubmitForm = async (data) => {
         setLoading(true);
-        await sleep(1000);
+        await sleep(300);
         const response = await api.authUser(data);
+        const responseData = await response.json();
+        setLoading(false);
         if (response.status === 200) {
+            toastNotify(responseData.msg, {type: 'success'});
             history.push("/tasks");
         } else {
-            // TODO: add logic
+            toastNotify(responseData.error, {type: 'error'});
         }
-        setLoading(false);
     };
 
     return (
@@ -41,8 +43,8 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
                                 className={classes.submit}>
                             Sign In
                         </Button>
-                        {loading &&  <CircularProgress className={classes.loadingSpinner}
-                            size={24}
+                        {loading && <CircularProgress className={classes.loadingSpinner}
+                                                      size={24}
                         />}
                     </div>
                     <Grid container>
@@ -54,6 +56,7 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
                     </Grid>
                 </form>
             </div>
+
         </Container>
     );
 };
