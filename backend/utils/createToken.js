@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = createToken;
 
-function createToken(uuid, res) {
+function createToken(res, uuid) {
     const token = jwt.sign({uuid: uuid}, process.env.JWT_SECURITY_KEY, {expiresIn: '6h'});
     const options = {
         httpOnly: false,

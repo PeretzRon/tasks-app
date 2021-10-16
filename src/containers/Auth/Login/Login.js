@@ -14,14 +14,13 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
     const onSubmitForm = async (data) => {
         setLoading(true);
         await sleep(300);
-        const response = await api.authUser(data);
-        const responseData = await response.json();
+        const response = await (await api.authUser(data)).json();
         setLoading(false);
-        if (response.status === 200) {
-            toastNotify(responseData.msg, {type: 'success'});
+        if (!response.error) {
+            toastNotify(response.msg, {type: 'success'});
             history.push("/tasks");
         } else {
-            toastNotify(responseData.error, {type: 'error'});
+            toastNotify(response.msg, {type: 'error'});
         }
     };
 

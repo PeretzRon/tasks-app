@@ -8,7 +8,6 @@ const {getEncryptedData} = require("../utils/md5");
 router.post('/createUser', async (req, res) => {
     const {email, password, ...userDetails} = req.body;
     const uuid = getEncryptedData(`${email}-${password}`);
-    console.log(uuid);
     let result = await db.getDb()
         .db()
         .collection('tasks')

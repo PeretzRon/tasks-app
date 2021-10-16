@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const db = require("./utils/db");
@@ -6,6 +6,7 @@ const tasksRouter = require('./routes/tasks');
 const usersRouter = require('./routes/users');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const routes = require("./api/routes");
 
 const app = express();
 app.use(bodyParser.urlencoded({
@@ -16,12 +17,15 @@ app.use(bodyParser.json());
 
 app.use(cors({
     credentials: true,
-    origin: true}));
+    origin: true
+}));
 
 app.use(cookieParser());
 
 app.use(tasksRouter);
-app.use(usersRouter);
+const router = routes();
+app.use('', router);
+// app.use(usersRouter);
 
 
 db.initDb((err, db) => {
