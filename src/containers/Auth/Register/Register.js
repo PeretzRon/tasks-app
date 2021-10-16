@@ -11,14 +11,13 @@ const Register = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
     const onSubmitForm = async (userInput) => {
         setLoading(true);
-        const response = await api.createUser(userInput);
-        const data = await response.json();
+        const response = await (await api.createUser(userInput)).json();
         setLoading(false);
-        if (response.status === 201) {
-            toastNotify(data.msg, {type: 'success'});
-            onChangedLoginRegisterPage();
+        if (response.error) {
+            toastNotify(response.msg, {type: 'error'});
         } else {
-            toastNotify(data.error, {type: 'error'});
+            toastNotify(response.msg, {type: 'success'});
+            onChangedLoginRegisterPage();
         }
     };
 
