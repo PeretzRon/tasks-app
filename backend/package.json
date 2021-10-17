@@ -22,7 +22,8 @@
     "morgan": "~1.9.1",
     "nodemon": "^2.0.13",
     "uuid": "^8.3.2",
-    "watch": "^1.0.2"
+    "watch": "^1.0.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "bson": "^4.5.3"

@@ -16,7 +16,7 @@ async function registerRoute(req, res) {
             throw new Error('failed to register a user');
         }
     } catch (e) {
-        console.error(`Error during loginRoute route: ${e}`);
+        console.error(`Error during registerRoute route: ${e}`);
         res.status(500).json({error: true, data: null});
     }
 }

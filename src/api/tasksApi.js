@@ -1,6 +1,6 @@
 const getTasks = async () => {
     try {
-        return await fetch('http://localhost:4001/getTasks', {
+        return await fetch('http://localhost:4001/tasks/getTasks', {
             method: 'GET',
             headers: {'Content-Type': 'application/json;charset=UTF-8'},
             credentials: 'include',
@@ -21,7 +21,7 @@ const updateTask = async task => {
 };
 
 const deleteTask = async taskID => {
-    return await fetch('http://localhost:4001/deleteTask', {
+    return await fetch('http://localhost:4001/tasks/deleteTask', {
         method: 'DELETE',
         credentials: 'include',
         headers: {'Content-Type': 'application/json;charset=UTF-8'},
@@ -30,7 +30,7 @@ const deleteTask = async taskID => {
 };
 
 const addTask = async task => {
-    return await fetch('http://localhost:4001/addNewTask', {
+    return await fetch('http://localhost:4001/tasks/addNewTask', {
         method: 'POST',
         credentials: 'include',
         headers: {'Content-Type': 'application/json;charset=UTF-8'},

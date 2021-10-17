@@ -25,7 +25,6 @@ app.use(cookieParser());
 app.use(tasksRouter);
 const router = routes();
 app.use('', router);
-// app.use(usersRouter);
 
 
 db.initDb((err, db) => {

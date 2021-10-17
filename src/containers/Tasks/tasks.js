@@ -21,14 +21,13 @@ const Tasks = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await getTasks();
-                if (response.status === 200) {
-                    await sleep(700);
-                    const retrievedTasks = await response.json();
-                    setTasksState({loading: false, tasks: retrievedTasks});
-                } else {
+                await sleep(700);
+                const response = await (await getTasks()).json();
+                if (response.error) {
                     toastNotify("Token expire, please log in", {type: 'error'});
                     history.push('/');
+                } else {
+                    setTasksState({loading: false, tasks: response.data});
                 }
             } catch (error) {
                 setTasksState({...tasksState, loading: false});
@@ -79,12 +78,12 @@ const Tasks = () => {
     };
 
     const onDeleteTaskAction = id => async event => {
-        const response = await deleteTask(id);
-        if (response.status === 204) {
+        const response = await (await deleteTask(id)).json();
+        if (response.error) {
+            console.error('failed to delete');
+        } else {
             const updatedTaskAfterDelete = tasksState.tasks.filter(value => value._id !== id);
             setTasksState({...tasksState, tasks: updatedTaskAfterDelete});
-        } else {
-            console.error('failed to delete');
         }
     };
 
