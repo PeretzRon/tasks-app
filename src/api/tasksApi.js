@@ -12,7 +12,7 @@ const getTasks = async () => {
 };
 
 const updateTask = async task => {
-    return await fetch('http://localhost:4001/updateTask', {
+    return await fetch('http://localhost:4001/tasks/updateTask', {
         method: 'PUT',
         credentials: 'include',
         headers: {'Content-Type': 'application/json;charset=UTF-8'},

@@ -64,16 +64,13 @@ const Tasks = () => {
         const indexToUpdate = tasksState.tasks.findIndex(task => task._id === id);
         const taskToUpdate = tasksState.tasks[indexToUpdate];
         taskToUpdate.isDone = !taskToUpdate.isDone;
-        const response = await updateTask(taskToUpdate);
-        if (response.status === 204) {
-            tasksState.tasks[indexToUpdate] = {...tasksState.tasks[indexToUpdate]};
-            setTasksState({...tasksState});
-        } else if (response.status === 400 || response.status === 401) {
+        const response = await (await updateTask(taskToUpdate)).json();
+        if (response.error) {
             toastNotify("Token expire, please log in", {type: 'error'});
             history.push('/');
-
         } else {
-            console.error('failed to update');
+            tasksState.tasks[indexToUpdate] = {...tasksState.tasks[indexToUpdate]};
+            setTasksState({...tasksState});
         }
     };
 
@@ -84,6 +81,7 @@ const Tasks = () => {
         } else {
             const updatedTaskAfterDelete = tasksState.tasks.filter(value => value._id !== id);
             setTasksState({...tasksState, tasks: updatedTaskAfterDelete});
+            toastNotify(response.msg, {type: 'info'});
         }
     };
 

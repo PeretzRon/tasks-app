@@ -2,8 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const db = require("./utils/db");
-const tasksRouter = require('./routes/tasks');
-const usersRouter = require('./routes/users');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const routes = require("./api/routes");
@@ -22,7 +20,6 @@ app.use(cors({
 
 app.use(cookieParser());
 
-app.use(tasksRouter);
 const router = routes();
 app.use('', router);
 

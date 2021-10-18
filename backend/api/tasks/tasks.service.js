@@ -1,7 +1,7 @@
 const tasksRepository = require('./tasks.repository');
 const {v4: uuidv4} = require("uuid");
 
-module.exports = {getTasks, addNewTask, deleteTask};
+module.exports = {getTasks, addNewTask, deleteTask, updateTask};
 
 async function getTasks(req) {
     try {
@@ -53,4 +53,24 @@ async function deleteTask(req) {
         return response;
     }
 }
+
+async function updateTask(req) {
+    const response = {error: false, msg: ''};
+    try {
+        const {_id, ...task} = req.body.task;
+        const result = await tasksRepository.updateTask(req.user.uuid, _id, task);
+        if (result?.modifiedCount) {
+            response.msg = 'Task updated successfully';
+        } else {
+            throw new Error('Failed to updated task');
+        }
+        return response;
+    } catch (e) {
+        console.error(`Error during service updateTask: ${e}`);
+        response.error = true;
+        response.msg = e;
+        return response;
+    }
+}
+
 

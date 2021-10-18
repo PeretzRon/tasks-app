@@ -1,6 +1,6 @@
 const db = require("../../utils/db");
 
-module.exports = {getTasks, addNewTask, deleteTask};
+module.exports = {getTasks, addNewTask, deleteTask, updateTask};
 
 async function getTasks(uuid) {
     try {
@@ -39,3 +39,16 @@ async function deleteTask(uuid, taskID) {
         throw e;
     }
 }
+
+async function updateTask(uuid, taskID, task) {
+    try {
+        return await db.getDb()
+            .db()
+            .collection('tasks')
+            .updateOne({uuid: uuid}, {$set: {[`tasks.${taskID}`]: task}});
+    } catch (e) {
+        console.error(`Error during repository updateTask: ${e}`);
+        throw e;
+    }
+}
+

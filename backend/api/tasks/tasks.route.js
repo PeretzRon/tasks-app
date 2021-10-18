@@ -40,4 +40,18 @@ router.delete('/deleteTask', async (req, res) => {
     }
 });
 
+router.put('/updateTask', async (req, res) => {
+    try {
+        const result = await tasksService.updateTask(req);
+        if (result.error) {
+            throw new Error(result.msg);
+        } else {
+            res.status(200).json(result);
+        }
+    } catch (error) {
+        console.error(`Error during getTasksRoute route: ${error}`);
+        res.status(500).json({error: true, msg: error});
+    }
+});
+
 module.exports = router;
