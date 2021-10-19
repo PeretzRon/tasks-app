@@ -77,7 +77,10 @@ const Tasks = () => {
     const onDeleteTaskAction = id => async event => {
         const response = await (await deleteTask(id)).json();
         if (response.error) {
-            console.error('failed to delete');
+            toastNotify(response.msg, {type: 'error'});
+            if (!response.isAuth) {
+                history.push('/');
+            }
         } else {
             const updatedTaskAfterDelete = tasksState.tasks.filter(value => value._id !== id);
             setTasksState({...tasksState, tasks: updatedTaskAfterDelete});

@@ -3,7 +3,7 @@ const router = express.Router();
 const loginRouter = require('./login/login.route');
 const registerRouter = require('./register/register.route');
 const tasksRouter = require('./tasks/tasks.route');
-const verifyToken = require('../utils/verifyToken');
+const verifyToken = require('../middlewares/verifyToken');
 
 const routes = () => {
 
