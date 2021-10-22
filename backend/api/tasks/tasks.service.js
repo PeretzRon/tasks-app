@@ -6,13 +6,10 @@ module.exports = {getTasks, addNewTask, deleteTask, updateTask};
 async function getTasks(req) {
     try {
         const results = await tasksRepository.getTasks(req.user.uuid);
-        const listTasks = [];
-        if ((results[0].tasks)) {
-            Object.keys(results[0].tasks).forEach(key => {
-                listTasks.push({_id: key, ...results[0].tasks[key]});
+        return Object.entries(results[0].tasks)
+            .map(([key, value]) => {
+                return {...value, _id: key};
             });
-        }
-        return listTasks;
     } catch (e) {
         console.error(`Error during service getTasks: ${e}`);
         return [];

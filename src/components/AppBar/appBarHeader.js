@@ -7,11 +7,33 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {AppBar} from "@mui/material";
 import styled from 'styled-components';
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {authActions} from "../../store/auth";
 
 const AppBarHeader = () => {
+
+    const history = useHistory();
+    const isAuth = useSelector(state => state.auth.isAuthenticated);
+    const dispatch = useDispatch();
+
+    const onLoginClick = () => {
+        history.push('/');
+    };
+
+    const onLogoutClick = () => {
+        history.push('/');
+        dispatch(authActions.logout());
+        document.cookie.split(";")
+            .forEach(function (c) {
+                document.cookie = c.replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+    };
+
     return (
         <Wrapper>
-            <Box className='root' sx={{flexGrow: 1}}>
+            <Box className="root" sx={{flexGrow: 1}}>
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton
@@ -23,10 +45,11 @@ const AppBarHeader = () => {
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography className='title' variant="h6" component="div" sx={{flexGrow: 1}}>
+                        <Typography className="title" variant="h6" component="div" sx={{flexGrow: 1}}>
                             Tasks
                         </Typography>
-                        <Button color="inherit">Login</Button>
+                        {!isAuth && <Button onClick={onLoginClick} color="inherit">Login</Button>}
+                        {isAuth && <Button onClick={onLogoutClick} color="inherit">Logout</Button>}
                     </Toolbar>
                 </AppBar>
             </Box>

@@ -9,6 +9,8 @@ import {addTask, deleteTask, getTasks, updateTask} from "../../api/tasksApi";
 import {CircularProgress, Grid} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import {sleep, toastNotify} from "../../Utils/commonMethods";
+import {useDispatch, useSelector} from "react-redux";
+import {authActions} from "../../store/auth";
 
 
 const Tasks = () => {
@@ -17,17 +19,19 @@ const Tasks = () => {
     const [filterAction, setFilterAction] = useState('All');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                await sleep(700);
+                await sleep(200);
                 const response = await (await getTasks()).json();
                 if (response.error) {
                     toastNotify("Token expire, please log in", {type: 'error'});
                     history.push('/');
                 } else {
                     setTasksState({loading: false, tasks: response.data});
+                    dispatch(authActions.login());
                 }
             } catch (error) {
                 setTasksState({...tasksState, loading: false});

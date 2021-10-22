@@ -9,7 +9,6 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-    console.log("App")
     return (
         <StyledEngineProvider injectFirst>
             <div className={classes.App}>
@@ -19,8 +18,8 @@ function App() {
                     <Route path={'/'} component={Auth}/>
                 </Switch>
             </div>
-            <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false}
-                            closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover
+            <ToastContainer position="bottom-left" autoClose={4000} hideProgressBar={false} newestOnTop={false}
+                            closeOnClick rtl={false} draggable pauseOnHover
             />
         </StyledEngineProvider>
 

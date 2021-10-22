@@ -5,11 +5,14 @@ import Button from "@mui/material/Button";
 import {useHistory} from "react-router-dom";
 import * as api from "../../../api/tasksApi";
 import {sleep, toastNotify} from "../../../Utils/commonMethods";
+import {useDispatch} from "react-redux";
+import {authActions} from "../../../store/auth";
 
 const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
     const [loading, setLoading] = useState(false);
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const onSubmitForm = async (data) => {
         setLoading(true);
@@ -19,6 +22,7 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
         if (!response.error) {
             toastNotify(response.msg, {type: 'success'});
             history.push("/tasks");
+            dispatch(authActions.login());
         } else {
             toastNotify(response.msg, {type: 'error'});
         }
