@@ -11,7 +11,7 @@ async function loginRoute(req, res) {
         if (isUserLoggedIn) {
             res.status(200).json({
                 error: false,
-                data: userData,
+                data: userData.tasks,
                 msg: `Hello, ${userData.firstName} ${userData.lastName}`
             });
         } else {

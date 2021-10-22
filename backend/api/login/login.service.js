@@ -1,11 +1,11 @@
 const createToken = require('../../utils/createToken');
-const { loginRepository } = require('./login.repository');
+const {loginRepository} = require('./login.repository');
 const {getEncryptedData} = require("../../utils/md5");
 
 async function loginService(req, res) {
     try {
-        const { email, password } = req.body;
-        const response = { isUserLoggedIn: false, userData: null };
+        const {email, password} = req.body;
+        const response = {isUserLoggedIn: false, userData: null};
 
         if (!email || !password) {
             throw new Error('not valid user details');
@@ -15,8 +15,11 @@ async function loginService(req, res) {
         const userData = await loginRepository(req, uuid);
         if (userData) {
             response.isUserLoggedIn = true;
-            response.userData = {...userData};
-
+            const tasks = Object.entries(userData.tasks)
+                .map(([key, value]) => {
+                    return {...value, _id: key};
+                });
+            response.userData = {tasks, firstName: userData.firstName, lastName: userData.lastName};
             // user is logged in successfully so we create jwt on res.cookie
             createToken(res, uuid);
         }
@@ -28,4 +31,4 @@ async function loginService(req, res) {
     }
 }
 
-module.exports = { loginService };
+module.exports = {loginService};
