@@ -17,7 +17,7 @@ async function registerRoute(req, res) {
         }
     } catch (e) {
         console.error(`Error during registerRoute route: ${e}`);
-        res.status(500).json({error: true, data: null});
+        res.status(500).json({error: true, data: null, msg: e});
     }
 }
 

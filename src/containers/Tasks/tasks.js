@@ -5,40 +5,49 @@ import FilteredArea from "../../components/FilteredArea/filteredArea";
 import classes from './tasks.module.css';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AddTaskDialog from "../../components/AddTaskDialog/addTaskDialog";
-import {addTask, deleteTask, getTasks, updateTask} from "../../api/tasksApi";
+import {getTasks} from "../../api/tasksApi";
 import {CircularProgress, Grid} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import {sleep, toastNotify} from "../../Utils/commonMethods";
 import {useDispatch, useSelector} from "react-redux";
 import {authActions} from "../../store/auth";
+import {tasksAction} from "../../store/tasks";
+import {addNewTaskAction, deleteTaskAction, markToggleCompleteTask} from "../../store/tasks-actions";
 
 
 const Tasks = () => {
-    const [tasksState, setTasksState] = useState({loading: true, tasks: []});
     const [inputFromSearch, setInputFromSearch] = useState("");
     const [filterAction, setFilterAction] = useState('All');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const history = useHistory();
     const dispatch = useDispatch();
+    const loading = useSelector(state => state.tasks.loading);
+    const tasks = useSelector(state => state.tasks.tasks);
+
+    console.log(tasks);
 
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                await sleep(200);
+                dispatch(tasksAction.setLoading(true));
+                await sleep(100);
                 const response = await (await getTasks()).json();
                 if (response.error) {
                     toastNotify("Token expire, please log in", {type: 'error'});
                     history.push('/');
                 } else {
-                    setTasksState({loading: false, tasks: response.data});
+                    dispatch(tasksAction.setLoading(false));
                     dispatch(authActions.login());
+                    dispatch(tasksAction.replaceTasks(response.data));
                 }
             } catch (error) {
-                setTasksState({...tasksState, loading: false});
+                dispatch(tasksAction.setLoading(false));
             }
         };
 
-        fetchTasks();
+        if (tasks.length === 0) {
+            fetchTasks();
+        }
     }, []);
 
 
@@ -65,65 +74,46 @@ const Tasks = () => {
     };
 
     const onMarkToggleAction = id => async event => {
-        const indexToUpdate = tasksState.tasks.findIndex(task => task._id === id);
-        const taskToUpdate = tasksState.tasks[indexToUpdate];
-        taskToUpdate.isDone = !taskToUpdate.isDone;
-        const response = await (await updateTask(taskToUpdate)).json();
-        if (response.error) {
-            toastNotify("Token expire, please log in", {type: 'error'});
-            history.push('/');
-        } else {
-            tasksState.tasks[indexToUpdate] = {...tasksState.tasks[indexToUpdate]};
-            setTasksState({...tasksState});
-        }
+        dispatch(markToggleCompleteTask(tasks, id, error => {
+            if (error) {
+                toastNotify("Token expire, please log in", {type: 'error'});
+                history.push('/');
+            }
+        }));
     };
 
     const onDeleteTaskAction = id => async event => {
-        const response = await (await deleteTask(id)).json();
-        if (response.error) {
-            toastNotify(response.msg, {type: 'error'});
-            if (!response.isAuth) {
-                history.push('/');
+        dispatch(deleteTaskAction(tasks, id, callback => {
+            toastNotify(callback.msg, {type: callback.type});
+            if (!callback.isAuth) {
+                // history.push('/'); // TODO
             }
-        } else {
-            const updatedTaskAfterDelete = tasksState.tasks.filter(value => value._id !== id);
-            setTasksState({...tasksState, tasks: updatedTaskAfterDelete});
-            toastNotify(response.msg, {type: 'info'});
-        }
+        }));
     };
 
     const addNewTask = async newTask => {
-        const clonedTasks = [...tasksState.tasks];
-        newTask.isDone = false;
-        const response = await addTask(newTask);
-        if (response.status === 201) {
-            const taskId = await response.json();
-            clonedTasks.push({
-                title: newTask.title,
-                description: newTask.description,
-                isDone: false,
-                _id: taskId._id
-            });
-            setTasksState({...tasksState, tasks: clonedTasks});
-            setIsDialogOpen(false);
-        } else {
-            console.error('failed to Add');
-        }
+        dispatch(addNewTaskAction(tasks, newTask, callback => {
+            if (callback.error) {
+                console.error('failed to Add');
+            } else {
+                setIsDialogOpen(false);
+            }
+        }));
     };
 
-    let tasksToRender = tasksState.tasks
+    let tasksToRender = tasks
         .filter(filterTask)
         .filter(task => task.title.toLowerCase().includes(inputFromSearch.toLowerCase()))
         .map(task => {
             return <Task key={task._id} {...task}
                          toggleMark={onMarkToggleAction(task._id)}
-                         deleteTask={onDeleteTaskAction(task._id)}
-            />;
+                         deleteTask={onDeleteTaskAction(task._id)}/>;
         });
 
     const loadingTasks = (<div className={classes.loading}>
         <CircularProgress size={100} color="primary"/>
     </div>);
+
     const tasksSection = (<div>
         <div className={classes.searchbar}>
             <Searchbar
@@ -149,7 +139,7 @@ const Tasks = () => {
                                         onClose={onCloseAction}/>}
     </div>);
 
-    const page = tasksState.loading ? loadingTasks : tasksSection;
+    const page = loading ? loadingTasks : tasksSection;
 
     return (
         <div className={classes.main}>

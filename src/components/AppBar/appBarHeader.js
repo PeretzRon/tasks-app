@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {authActions} from "../../store/auth";
+import {tasksAction} from "../../store/tasks";
 
 const AppBarHeader = () => {
 
@@ -24,6 +25,7 @@ const AppBarHeader = () => {
     const onLogoutClick = () => {
         history.push('/');
         dispatch(authActions.logout());
+        dispatch(tasksAction.deleteAllTasks());
         document.cookie.split(";")
             .forEach(function (c) {
                 document.cookie = c.replace(/^ +/, "")

@@ -7,6 +7,7 @@ import * as api from "../../../api/tasksApi";
 import {sleep, toastNotify} from "../../../Utils/commonMethods";
 import {useDispatch} from "react-redux";
 import {authActions} from "../../../store/auth";
+import {tasksAction} from "../../../store/tasks";
 
 const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
@@ -23,6 +24,7 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
             toastNotify(response.msg, {type: 'success'});
             history.push("/tasks");
             dispatch(authActions.login());
+            dispatch(tasksAction.replaceTasks(response.data))
         } else {
             toastNotify(response.msg, {type: 'error'});
         }

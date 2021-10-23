@@ -5,7 +5,7 @@ async function registerRepository(uuid, email, userDetails) {
         return await db.getDb()
             .db()
             .collection('tasks')
-            .updateOne({email: email}, {$set: {...userDetails, email: email, uuid: uuid}}, {upsert: true});
+            .updateOne({email: email}, {$setOnInsert: {...userDetails, email: email, uuid: uuid, tasks: {}}}, {upsert: true});
     } catch (e) {
         console.error(`Error during registerRepository: ${e}`);
         throw e;
