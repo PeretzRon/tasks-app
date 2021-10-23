@@ -1,4 +1,5 @@
 const db = require("../../services/db");
+const logger = require('../../utils/logger')(module);
 
 module.exports = {getTasks, addNewTask, deleteTask, updateTask};
 
@@ -11,7 +12,7 @@ async function getTasks(uuid) {
             .project({_id: 0, tasks: 1})
             .toArray();
     } catch (e) {
-        console.error(`Error during repository getTasks: ${e}`);
+        logger.error(`Error during repository getTasks: ${e}`);
         throw e;
     }
 }
@@ -23,7 +24,7 @@ async function addNewTask(uuid, taskID, task) {
             .collection('tasks')
             .updateOne({uuid: uuid}, {$set: {[`tasks.${taskID}`]: task}});
     } catch (e) {
-        console.error(`Error during repository addNewTask: ${e}`);
+        logger.error(`Error during repository addNewTask: ${e}`);
         throw e;
     }
 }
@@ -35,7 +36,7 @@ async function deleteTask(uuid, taskID) {
             .collection('tasks')
             .updateOne({uuid: uuid}, {$unset: {[`tasks.${taskID}`]: ""}});
     } catch (e) {
-        console.error(`Error during repository deleteTask: ${e}`);
+        logger.error(`Error during repository deleteTask: ${e}`);
         throw e;
     }
 }
@@ -47,7 +48,7 @@ async function updateTask(uuid, taskID, task) {
             .collection('tasks')
             .updateOne({uuid: uuid}, {$set: {[`tasks.${taskID}`]: task}});
     } catch (e) {
-        console.error(`Error during repository updateTask: ${e}`);
+        logger.error(`Error during repository updateTask: ${e}`);
         throw e;
     }
 }

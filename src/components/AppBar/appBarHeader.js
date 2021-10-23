@@ -17,6 +17,7 @@ const AppBarHeader = () => {
     const history = useHistory();
     const isAuth = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
+    const userFullName = useSelector(state => state.auth.fullName);
 
     const onLoginClick = () => {
         history.push('/');
@@ -47,6 +48,10 @@ const AppBarHeader = () => {
                         >
                             <MenuIcon/>
                         </IconButton>
+                        {userFullName && <Typography component="div">
+                            Hello, {userFullName}
+                        </Typography>}
+
                         <Typography className="title" variant="h6" component="div" sx={{flexGrow: 1}}>
                             Tasks
                         </Typography>

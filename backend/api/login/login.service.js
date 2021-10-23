@@ -1,6 +1,7 @@
 const createToken = require('../../utils/createToken');
 const {loginRepository} = require('./login.repository');
 const {getEncryptedData} = require("../../utils/md5");
+const logger = require('../../utils/logger')(module);
 
 async function loginService(req, res) {
     try {
@@ -26,7 +27,7 @@ async function loginService(req, res) {
 
         return response;
     } catch (e) {
-        console.error(`Error during loginService: ${e}`);
+        logger.error(`Error during loginService: ${e}`);
         throw e;
     }
 }

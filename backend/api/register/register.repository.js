@@ -1,4 +1,6 @@
 const db = require("../../services/db");
+const logger = require('../../utils/logger')(module);
+
 
 async function registerRepository(uuid, email, userDetails) {
     try {
@@ -7,7 +9,7 @@ async function registerRepository(uuid, email, userDetails) {
             .collection('tasks')
             .updateOne({email: email}, {$setOnInsert: {...userDetails, email: email, uuid: uuid, tasks: {}}}, {upsert: true});
     } catch (e) {
-        console.error(`Error during registerRepository: ${e}`);
+        logger.error(`Error during registerRepository: ${e}`);
         throw e;
     }
 }

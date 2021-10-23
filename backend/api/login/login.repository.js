@@ -1,4 +1,5 @@
 const db = require("../../services/db");
+const logger = require('../../utils/logger')(module);
 
 async function loginRepository(req, uuid) {
     try {
@@ -7,7 +8,7 @@ async function loginRepository(req, uuid) {
             .collection('tasks')
             .findOne({uuid: uuid});
     } catch (e) {
-        console.error(`Error during loginRepository: ${e}`);
+        logger.error(`Error during loginRepository: ${e}`);
         throw e;
     }
 }

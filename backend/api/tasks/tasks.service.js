@@ -1,5 +1,6 @@
 const tasksRepository = require('./tasks.repository');
 const {v4: uuidv4} = require("uuid");
+const logger = require('../../utils/logger')(module);
 
 module.exports = {getTasks, addNewTask, deleteTask, updateTask};
 
@@ -11,7 +12,7 @@ async function getTasks(req) {
                 return {...value, _id: key};
             });
     } catch (e) {
-        console.error(`Error during service getTasks: ${e}`);
+        logger.error(`Error during service getTasks: ${e}`);
         return [];
     }
 }
@@ -27,7 +28,7 @@ async function addNewTask(req) {
 
         return taskID;
     } catch (e) {
-        console.error(`Error during service addNewTask: ${e}`);
+        logger.error(`Error during service addNewTask: ${e}`);
         return null;
     }
 }
@@ -44,7 +45,7 @@ async function deleteTask(req) {
         }
         return response;
     } catch (e) {
-        console.error(`Error during service deleteTask: ${e}`);
+        logger.error(`Error during service deleteTask: ${e}`);
         response.error = true;
         response.msg = e;
         return response;
@@ -63,7 +64,7 @@ async function updateTask(req) {
         }
         return response;
     } catch (e) {
-        console.error(`Error during service updateTask: ${e}`);
+        logger.error(`Error during service updateTask: ${e}`);
         response.error = true;
         response.msg = e;
         return response;

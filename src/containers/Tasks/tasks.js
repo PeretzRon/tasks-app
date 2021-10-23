@@ -35,8 +35,8 @@ const Tasks = () => {
                     history.push('/');
                     dispatch(tasksAction.setLoading(false));
                 } else {
-                    dispatch(authActions.login());
-                    dispatch(tasksAction.replaceTasks(response.data));
+                    dispatch(authActions.login({firstName: response.data.firstName, lastName: response.data.lastName}));
+                    dispatch(tasksAction.replaceTasks(response.data.tasks));
                 }
             } catch (error) {
                 dispatch(tasksAction.setLoading(false));

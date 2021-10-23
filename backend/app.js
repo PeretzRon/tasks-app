@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const routes = require("./api/routes");
 const db = require("./services/db");
+const logger = require('./utils/logger')(module);
 
 const app = express();
 app.use(bodyParser.urlencoded({
@@ -29,7 +30,7 @@ db.initDb((err, db) => {
         console.log(err);
     } else {
         app.listen(4001, '0.0.0.0', () => {
-            console.log('Server is running on port 4001');
+            logger.info('Server is running on port 4001');
         });
     }
 });

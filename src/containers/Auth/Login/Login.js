@@ -22,8 +22,8 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
         setLoading(false);
         if (!response.error) {
             toastNotify(response.msg, {type: 'success'});
-            dispatch(authActions.login());
-            dispatch(tasksAction.replaceTasks(response.data))
+            dispatch(authActions.login({firstName: response.data.firstName, lastName: response.data.lastName}));
+            dispatch(tasksAction.replaceTasks(response.data.tasks));
             history.push("/tasks");
         } else {
             toastNotify(response.msg, {type: 'error'});

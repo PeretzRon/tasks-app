@@ -1,4 +1,5 @@
 const {createLogger, transports, format} = require('winston');
+
 const path = require('path');
 const winston = require("winston");
 
@@ -10,6 +11,7 @@ const getLabel = function (callingModule) {
     return callingModule.filename.split(path.sep).pop();
 };
 
+
 const consoleLogger = (callingModule) => {
     return {
         format: format.combine(
@@ -17,7 +19,7 @@ const consoleLogger = (callingModule) => {
                 label: getLabel(callingModule)
             }),
             format.timestamp({
-                format: "YY-MM-DD HH:MM:SS:SSS"
+                format: "DD-MM-YY HH:MM:SS:SSS"
             }),
             format(info => {
                 info.level = info.level.toUpperCase().padEnd(6);
@@ -36,7 +38,7 @@ const fileLogger = {
             label: '[LOGGER]'
         }),
         format.timestamp({
-            format: "YY-MM-DD HH:MM:SS:SSS"
+            format: "DD-MM-YY HH:MM:SS:SSS"
         }),
         format(info => {
             info.level = info.level.toUpperCase().padEnd(7);
@@ -53,12 +55,3 @@ module.exports = function (callingModule) {
         transports: [new winston.transports.Console(consoleLogger(callingModule))]
     });
 };
-
-//
-// const logger = createLogger({
-//     level: 'silly',
-//     transports: [new transports.Console(consoleLogger), new transports.File(fileLogger)]
-// });
-//
-// module.exports = logger;
-
