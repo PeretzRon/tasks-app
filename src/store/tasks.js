@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-
 const initialAuthState = {
     loading: false,
     tasks: [],
@@ -18,7 +17,6 @@ const tasksSlice = createSlice({
             state.loading = action.payload;
         },
         replaceTask(state, action) {
-            console.log('replaceTask');
             const {indexToUpdate, taskToUpdate} = action.payload;
             state.tasks[indexToUpdate] = taskToUpdate;
         },

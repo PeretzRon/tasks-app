@@ -1,4 +1,4 @@
-const db = require("../../utils/db");
+const db = require("../../services/db");
 
 async function loginRepository(req, uuid) {
     try {

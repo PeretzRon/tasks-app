@@ -17,7 +17,7 @@
 
 .addIcon {
     position: fixed;
-    bottom: 40px;
+    top: 60px;
     left: 40px;
     font-size: 5rem;
     transition: transform 0.2s ease-in;

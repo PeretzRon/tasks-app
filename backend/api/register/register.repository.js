@@ -1,4 +1,4 @@
-const db = require("../../utils/db");
+const db = require("../../services/db");
 
 async function registerRepository(uuid, email, userDetails) {
     try {

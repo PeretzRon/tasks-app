@@ -17,7 +17,7 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
 
     const onSubmitForm = async (data) => {
         setLoading(true);
-        await sleep(300);
+        await sleep(100);
         const response = await (await api.authUser(data)).json();
         setLoading(false);
         if (!response.error) {
