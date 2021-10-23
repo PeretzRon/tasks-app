@@ -22,9 +22,9 @@ const Login = ({register, handleSubmit, onChangedLoginRegisterPage}) => {
         setLoading(false);
         if (!response.error) {
             toastNotify(response.msg, {type: 'success'});
-            history.push("/tasks");
             dispatch(authActions.login());
             dispatch(tasksAction.replaceTasks(response.data))
+            history.push("/tasks");
         } else {
             toastNotify(response.msg, {type: 'error'});
         }
