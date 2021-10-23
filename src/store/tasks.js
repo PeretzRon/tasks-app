@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 
 const initialAuthState = {
-    loading: true,
+    loading: false,
     tasks: [],
 };
 
@@ -12,6 +12,7 @@ const tasksSlice = createSlice({
     reducers: {
         replaceTasks(state, action) {
             state.tasks = action.payload;
+            state.loading = false;
         },
         setLoading(state, action) {
             state.loading = action.payload;

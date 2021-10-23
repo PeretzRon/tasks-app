@@ -1,14 +1,14 @@
 import {addTask, deleteTask, updateTask} from "../api/tasksApi";
 import {tasksAction} from "./tasks";
 
-export const markToggleCompleteTask = (tasks, id, error) => {
+export const markToggleCompleteTask = (tasks, id, callback) => {
     return async dispatch => {
         const indexToUpdate = tasks.findIndex(task => task._id === id);
         const taskToUpdate = {...tasks[indexToUpdate]};
         taskToUpdate.isDone = !taskToUpdate.isDone;
         const response = await (await updateTask(taskToUpdate)).json();
         if (response.error) {
-            error(true);
+            callback({msg: response.msg, type: 'error', isUnauthorized: response.isUnauthorized});
         } else {
             dispatch(tasksAction.replaceTask({taskToUpdate, indexToUpdate}));
         }
@@ -19,7 +19,7 @@ export const deleteTaskAction = (tasks, id, callback) => {
     return async dispatch => {
         const response = await (await deleteTask(id)).json();
         if (response.error) {
-            callback({msg: response.msg, type: 'error', isAuth: response.isAuth});
+            callback({msg: response.msg, type: 'error', isUnauthorized: response.isUnauthorized});
         } else {
             const updatedTaskAfterDelete = tasks.filter(value => value._id !== id);
             dispatch(tasksAction.replaceTasks(updatedTaskAfterDelete));

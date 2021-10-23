@@ -7,7 +7,7 @@ import {Box, Card, CardContent, Grid, Tooltip, Typography} from "@mui/material";
 import styled from "styled-components";
 import {Circle} from "react-color/lib/components/circle/Circle";
 import {updateTask} from "../../api/tasksApi";
-
+import PushPinIcon from '@mui/icons-material/PushPin';
 
 const Task = props => {
     const {title, description, isDone, color} = props;
@@ -28,6 +28,7 @@ const Task = props => {
         <Grid item>
             <TaskCard>
                 <Card ref={colorRef} style={{backgroundColor: color}} className={`root ${isDone && 'doneTask'}`}>
+                    <PushPinIcon fontSize={'medium'} className={'attachIcon'}/>
                     <Box sx={{display: 'flex', flexDirection: 'column'}}>
                         <CardContent sx={{flex: '1 0 auto'}}>
                             <Typography component="div" variant="h5">
@@ -66,6 +67,8 @@ const TaskCard = styled.div`
 
   .root {
     border: 2px solid #ccc;
+    position: relative;
+    clip-path: polygon(0 0, 97% 3%, 100% 100%, 0 97%);
     padding: 10px;
     min-width: 300px;
     min-height: 200px;
@@ -75,7 +78,7 @@ const TaskCard = styled.div`
     margin: 10px;
     transition: all 0.3s ease-in;
     border-radius: 4px;
-    box-shadow: 1px 1px 2px #bbc9ee;
+    box-shadow: inset -3px -4px 0px 0px #3f404230
   }
 
   .root:hover {
@@ -89,6 +92,13 @@ const TaskCard = styled.div`
   .doneTask {
     text-decoration: line-through;
     animation: strike 0.5s linear;
+  }
+  
+  .attachIcon {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    transform: rotate(-30deg);
   }
 
   @keyframes strike {

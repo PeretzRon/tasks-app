@@ -24,8 +24,6 @@ const Tasks = () => {
     const loading = useSelector(state => state.tasks.loading);
     const tasks = useSelector(state => state.tasks.tasks);
 
-    console.log(tasks);
-
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -35,8 +33,8 @@ const Tasks = () => {
                 if (response.error) {
                     toastNotify("Token expire, please log in", {type: 'error'});
                     history.push('/');
-                } else {
                     dispatch(tasksAction.setLoading(false));
+                } else {
                     dispatch(authActions.login());
                     dispatch(tasksAction.replaceTasks(response.data));
                 }
@@ -74,9 +72,9 @@ const Tasks = () => {
     };
 
     const onMarkToggleAction = id => async event => {
-        dispatch(markToggleCompleteTask(tasks, id, error => {
-            if (error) {
-                toastNotify("Token expire, please log in", {type: 'error'});
+        dispatch(markToggleCompleteTask(tasks, id, callback => {
+            toastNotify(callback.msg, {type: callback.type});
+            if (callback.isUnauthorized) {
                 history.push('/');
             }
         }));
@@ -85,8 +83,8 @@ const Tasks = () => {
     const onDeleteTaskAction = id => async event => {
         dispatch(deleteTaskAction(tasks, id, callback => {
             toastNotify(callback.msg, {type: callback.type});
-            if (!callback.isAuth) {
-                // history.push('/'); // TODO
+            if (callback.isUnauthorized) {
+                history.push('/');
             }
         }));
     };
