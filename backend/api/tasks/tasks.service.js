@@ -7,10 +7,12 @@ module.exports = {getTasks, addNewTask, deleteTask, updateTask};
 async function getTasks(req) {
     try {
         const results = await tasksRepository.getTasks(req.user.uuid);
-        return Object.entries(results[0].tasks)
+        const response = {firstName: results[0].firstName, lastName: results[0].lastName};
+        response.tasks = Object.entries(results[0].tasks)
             .map(([key, value]) => {
                 return {...value, _id: key};
             });
+        return response;
     } catch (e) {
         logger.error(`Error during service getTasks: ${e}`);
         return [];

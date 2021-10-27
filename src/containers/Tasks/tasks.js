@@ -75,6 +75,7 @@ const Tasks = () => {
         dispatch(markToggleCompleteTask(tasks, id, callback => {
             toastNotify(callback.msg, {type: callback.type});
             if (callback.isUnauthorized) {
+                dispatch(authActions.logout());
                 history.push('/');
             }
         }));
@@ -84,6 +85,7 @@ const Tasks = () => {
         dispatch(deleteTaskAction(tasks, id, callback => {
             toastNotify(callback.msg, {type: callback.type});
             if (callback.isUnauthorized) {
+                dispatch(authActions.logout());
                 history.push('/');
             }
         }));

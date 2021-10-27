@@ -9,7 +9,7 @@ async function getTasks(uuid) {
             .db()
             .collection('tasks')
             .find({uuid: uuid})
-            .project({_id: 0, tasks: 1})
+            .project({_id: 0, tasks: 1, firstName: 1, lastName: 1})
             .toArray();
     } catch (e) {
         logger.error(`Error during repository getTasks: ${e}`);
