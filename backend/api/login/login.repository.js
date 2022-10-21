@@ -1,5 +1,5 @@
 const db = require("../../services/db");
-const logger = require('../../utils/logger')(module);
+const logger = require('rp.libs.logger');
 
 async function loginRepository(req, uuid) {
     try {
@@ -8,7 +8,7 @@ async function loginRepository(req, uuid) {
             .collection('tasks')
             .findOne({uuid: uuid});
     } catch (e) {
-        logger.error(`Error during loginRepository: ${e}`);
+        logger.error(`Error during loginRepository: ${e}`, req);
         throw e;
     }
 }

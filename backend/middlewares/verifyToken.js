@@ -9,7 +9,7 @@ module.exports = function auth(req, res, next) {
             if (error) {
                 throw error;
             } else {
-                req.user = decoded;
+                req.decoded = decoded;
                 next();
             }
         });

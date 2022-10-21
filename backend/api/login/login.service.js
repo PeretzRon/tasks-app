@@ -27,7 +27,7 @@ async function loginService(req, res) {
 
         return response;
     } catch (e) {
-        logger.error(`Error during loginService: ${e}`);
+        logger.error(`Error during loginService: ${e}`, req);
         throw e;
     }
 }

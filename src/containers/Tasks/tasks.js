@@ -6,13 +6,16 @@ import classes from './tasks.module.css';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AddTaskDialog from "../../components/AddTaskDialog/addTaskDialog";
 import {getTasks} from "../../api/tasksApi";
-import {CircularProgress, Grid} from "@mui/material";
+import {CircularProgress, Grid, Hidden} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import {sleep, toastNotify} from "../../Utils/commonMethods";
 import {useDispatch, useSelector} from "react-redux";
 import {authActions} from "../../store/auth";
 import {tasksAction} from "../../store/tasks";
 import {addNewTaskAction, deleteTaskAction, markToggleCompleteTask} from "../../store/tasks-actions";
+import animationData from "../../static/56438-man-with-task-list.json";
+import Lottie from "react-lottie";
+
 
 
 const Tasks = () => {
@@ -47,6 +50,15 @@ const Tasks = () => {
             fetchTasks();
         }
     }, []);
+
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
 
 
     const openDialogAction = () => {
@@ -131,9 +143,16 @@ const Tasks = () => {
                 {tasksToRender}
             </Grid>
         </div>
-        <div className={classes.addIcon}>
-            <AddCircleIcon onClick={openDialogAction} style={{fontSize: '4rem', color: "#1976D2"}}/>
-        </div>
+        <Hidden smDown>
+            <div className={classes.addIcon}>
+                <AddCircleIcon onClick={openDialogAction} style={{fontSize: '4rem', color: "#1976D2"}}/>
+            </div>
+        </Hidden>
+        <Lottie options={defaultOptions}
+                style={{marginTop: '0px'}}
+                height={400}
+                width={400}/>
+
         {isDialogOpen && <AddTaskDialog isOpen={isDialogOpen}
                                         onAddNewTask={(data) => addNewTask(data)}
                                         onClose={onCloseAction}/>}

@@ -12,7 +12,6 @@ const AddTaskDialog = props => {
     } = useForm();
 
     const onSubmit = (data) => props.onAddNewTask(data);
-
     return (
             <Dialog
                 open={props.isOpen}

@@ -5,6 +5,8 @@ import {useForm} from "react-hook-form";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Lottie from 'react-lottie';
+import animationData from '../../static/74569-two-factor-authentication.json';
 
 const Auth = props => {
 
@@ -37,15 +39,34 @@ const Auth = props => {
         onChangedLoginRegisterPage={onChangedLoginRegisterPage}
         handleSubmit={handleSubmit}/>;
 
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+
     return (
         <div className={classes.Auth}>
-            <Avatar className={classes.avatarLogo}>
-                <LockOutlinedIcon/>
-            </Avatar>
-            <Typography className={classes.title} component="h1" variant="h5">
-                {isLoginPage ? 'Sign in' : 'Sign up'}
-            </Typography>
-            {isLoginPage ? loginPage : registerPage}
+            {/*<Avatar className={classes.avatarLogo}>*/}
+            {/*    <LockOutlinedIcon/>*/}
+            {/*</Avatar>*/}
+
+
+            <div>
+                <Typography className={classes.title} component="h1" variant="h5">
+                    {isLoginPage ? 'Sign in' : 'Sign up'}
+                </Typography>
+                {isLoginPage ? loginPage : registerPage}
+
+            </div>
+            <Lottie options={defaultOptions}
+                    style={{marginTop: '40px'}}
+                    height={190}
+                    width={210}/>
+
         </div>
     );
 };
